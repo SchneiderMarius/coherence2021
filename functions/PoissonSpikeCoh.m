@@ -69,9 +69,8 @@ steps(1)    = 1;
 params.Ntest = Ntest;
 LF = cell(1,length(out.LFP));
 for cnt1 = 1 : length(out.LFP)  
-    input1                            = zeros(length(out.LFP{cnt1}),1);% randn(length(S{cnt1}),1) * 2 * noiseAmp - noiseAmp;    
-    %[~, Frate(cnt1),LF{cnt1}]         = inhomopp2test(out.LFP{cnt1}(:,2),modstr,params,maxfire,SPcumsum,steps);      
-    [~, Frate(cnt1),LF{cnt1}]         = inhomopp2test(out.LFP{cnt1}(:,2),modstr,params,maxfire,steps);      
+    input1                            = zeros(length(out.LFP{cnt1}),1);
+    [~, Frate(cnt1),LF{cnt1}]         = inhomopp(out.LFP{cnt1}(:,2),modstr,params,maxfire,steps);      
 end
 
 %%
