@@ -79,7 +79,7 @@ for cnt1 = 1 : length(steps)
         LFP{cntT} = full(LF{cntT}(cnt1,:)); 
     end
 
-    [~,td,~] = fieldtrip_it(LFP,params);
+    [~,td,~] = fieldtrip(LFP,params);
     cfg          = [];
     cfg.lpfilter = 'yes';
     cfg.lpfreq   = 100;
