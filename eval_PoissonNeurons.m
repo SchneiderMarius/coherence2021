@@ -91,9 +91,9 @@ out = cellfun(@PoissonSpikeCoh,cw,alpha,maxfire,g,N,stps);
 id = 1;        
 for cnt3 = 1 : length(Test.fac)
     for cnt4 = 1 : length(Test.cw)
-        result.Frate(cnt3,cnt4) = out{id}.Frate;
+        result.Frate(cnt3,cnt4) = out(id).Frate;
         result.cw(cnt3,cnt4) = Test.cw(cnt4);
-        result.snr(cnt3,cnt4) = out{id}.SNR;               
+        result.snr(cnt3,cnt4) = out(id).SNR;               
         for cnt5 = 1 : steps
             result.pow(cnt3,cnt4,cnt5,:,:) = out(id).pow(:,:,cnt5);
             result.CohSim(cnt3,cnt4,cnt5) = out(id).Cohf(cnt5);  
@@ -104,8 +104,8 @@ end
 result.strcoh   = 'snr_cw_N';
 result.strpow   = 'snr_cw_N_Signal_frq';
 result.maxfire  = Test.maxfire(cnt2);
-result.N        = out{1}.N;
-result.powfrq   = out{1}.f;
+result.N        = out(1).N;
+result.powfrq   = out(1).f;
 
 save(fullfile(cd,'SpikeCoh'),'result')
 clear result
@@ -143,8 +143,8 @@ out = cellfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp);
 
 id = 1;   
 
-result.PPCfreq = out{1}.PPCfrq;
-result.Cohfreq = out{1}.Cohfrq;
+result.PPCfreq = out(1).PPCfrq;
+result.Cohfreq = out(1).Cohfrq;
 for cnt1 = 1 : length(Test.fac)
     for cnt2 = 1 : length(Test.cw)
         result.Frate(cnt1,cnt2) = out(id).Frate;
