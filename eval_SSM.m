@@ -53,4 +53,4 @@ for cnt1 = 1 : length(func)
         end
     end
 end
-save(fullfile(cd,'results','Fig2BC'),'result');
+save(fullfile(cd,'Fig2BC'),'result');
