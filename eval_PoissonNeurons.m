@@ -5,7 +5,8 @@ addpath(fullfile(cd,'functions'));
 
 %% 
 load(fullfile('par','Poissonparameter'));
-numTrial        = 2%500;
+
+numTrial        = 500;
 num             = 2;
 params.fsample = 1000;
 params.rate     = 1/params.fsample;
@@ -63,44 +64,29 @@ end
 
 %% 2) Spike Coherence
 clear all
-addpath /mnt/hpx/opt/ESIsoftware/matlab/slurmfun
-addpath /opt/ESIsoftware/matlab/slurmfun
-addpath(fullfile(cd,'helper_functions_model'));
+addpath(fullfile(cd,'functions'));
 
-%save_folder = fullfile(cd,'results','LFPpartModCoh4');
-SaveDir = fullfile(cd,'results');
-
-% original:
-%Test.func = {'sigmoid1','sigmoid2','sigmoid3','linear'};
-%Test.maxfire = [1 2 10];%round([logspace(0,2,10)]);%[2 round([ logspace(1,4,10)]/10)*10];
-% plotted
-%nm = {'Modpart_sigmoid2_rate2.mat','Modpart_sigmoid3_rate2.mat'}
-%Test.func = {'sigmoid2','sigmoid3'};
-%Test.maxfire = [2];%round([logspace(0,2,10)]);%[2 round([ logspace(1,4,10)]/10)*10];
 Test.maxfire    = 2;
 Test.cw         = [logspace(-3,0,15)];
-Test.alpha      = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];%round([logspace(-1,0,10) 2 4]*100)/100;% 14 50 100];
-Test.g          = 1;%[0 0.5 0.95 1];
+Test.alpha      = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];
+Test.g          = 1;
 Test.fac        = fliplr(Test.alpha);
 Test.N          = 1000;
 steps           = 20;
 
-%for cnt2 = 1 : length(Test.maxfire)
 id = 1;        
-for cnt3 = 1 : length(Test.fac)
-    for cnt4 = 1 : length(Test.cw)
-        cw{id} = Test.cw(cnt4);
-        alpha{id} = Test.fac(cnt3);
+for cnt1 = 1 : length(Test.fac)
+    for cnt2 = 1 : length(Test.cw)
+        cw{id} = Test.cw(cnt2);
+        alpha{id} = Test.fac(cnt1);
         N{id} = Test.N;
         maxfire{id} = Test.maxfire;
         g{id} = Test.g(1);
-        fl{id} = SaveDir;
         stps{id} = steps; 
         id = id + 1;
     end
 end
-out = slurmfun(@PoissonSpikeCoh,cw,alpha,maxfire,g,N,stps,fl,'partition', '8GBXS');      
-%        out = cellfun(@SpikeModPartTransferCohtestRate,cw,alpha,maxfire,g,N,stps,func)
+out = cellfun(@PoissonSpikeCoh,cw,alpha,maxfire,g,N,stps,fl);      
 
 id = 1;        
 for cnt3 = 1 : length(Test.fac)
@@ -115,88 +101,44 @@ for cnt3 = 1 : length(Test.fac)
         id = id + 1;                
     end
 end
-result.strcoh = 'snr_cw_N';
-result.strpow = 'snr_cw_N_Signal_frq';
+result.strcoh   = 'snr_cw_N';
+result.strpow   = 'snr_cw_N_Signal_frq';
+result.maxfire  = Test.maxfire(cnt2);
+result.N        = out{1}.N;
+result.powfrq   = out{1}.f;
 
-result.maxfire = Test.maxfire(cnt2);
-result.N = out{1}.N;
-result.powfrq = out{1}.f;
-
-save(fullfile(SaveDir,'FigS7','SpikeCoh'),'result')
-%save(fullfile(save_folder,sprintf('Modpart_%s_rate%d',Test.func{cnt1},result.maxfire)),'result')
+save(fullfile(cd,'SpikeCoh'),'result')
 clear result
-%end
-
-
 
 %% 3) Spike PPC
-%% b) PPC
 clear all
-addpath /mnt/hpx/opt/ESIsoftware/matlab/slurmfun
-addpath /opt/ESIsoftware/matlab/slurmfun
-addpath(fullfile(cd,'helper_functions_model'));
+addpath(fullfile(cd,'functions'));
 
-save_folder = fullfile(cd,'results','FigS7');
-SaveDir = fullfile(cd,'results');
-%save_folder = fullfile(cd,'results','LFPpartModPPC4');
-% original:
-%Test.func = {'sigmoid1','sigmoid2','sigmoid3','linear'};
-%Test.maxfire = [1 2 10];%round([logspace(0,2,10)]);%[2 round([ logspace(1,4,10)]/10)*10];
+Test.cw         = [logspace(-3,0,15)];
+Test.alpha      = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];
+Test.fac        = fliplr(Test.alpha);
+Test.g          = 1;
+Test.maxfire    = 1;
+Test.N          = 50;
+steps           = 1;
+Test.cw         = Test.cw(9);
+Test.fac        = Test.fac(9);
 
-% plotted
-%nm = {'Modpart_sigmoid2_rate2.mat','Modpart_sigmoid3_rate2.mat'}
-%Test.func = {'sigmoid2'};
-%Test.maxfire = [1,2];%round([logspace(0,2,10)]);%[2 round([ logspace(1,4,10)]/10)*10];
-
-
-
-Test.cw = [logspace(-3,0,15)];
-Test.alpha = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];%round([logspace(-1,0,10) 2 4]*100)/100;% 14 50 100];
-% Test.cw = 1;
-% Test.alpha = [logspace(-2,0,10) 2];%round([logspace(-1,0,10) 2 4]*100)/100;% 14 50 100];
-%Test.maxfire = [1 2 10];%round([logspace(0,2,10)]);%[2 round([ logspace(1,4,10)]/10)*10];
-%Test.g = 1;%[0 0.5 0.95 1];
-%Test.func = {'sigmoid','sigmoid2','sigmoid3','linear'};
-
-Test.fac= fliplr(Test.alpha);
-Test.g = 1;%[0 0.5 0.95 1];
-Test.maxfire = 1;
-Test.N       = 50;
-steps        = 1;
-Test.cw      = Test.cw(9);
-Test.fac     = Test.fac(9)
-
-%for cnt1 = 1 : length(Test.func)
-%    for cnt11 = 1 : length(Test.N)
-%        for cnt2 = 1 : length(Test.maxfire)
-            %result.func = Test.func{cnt1};
 id = 1;        
-for cnt3 = 1 : length(Test.fac)
-    for cnt4 = 1 : length(Test.cw)
-        cw{id} = Test.cw(cnt4);
-        alpha{id} = Test.fac(cnt3);
+for cnt1 = 1 : length(Test.fac)
+    for cnt2 = 1 : length(Test.cw)
+        cw{id} = Test.cw(cnt2);
+        alpha{id} = Test.fac(cnt1);
         N{id} = Test.N;
-        maxfire{id} = Test.maxfire;%(cnt2);
+        maxfire{id} = Test.maxfire;
         g{id} = Test.g(1);
-        folder{id} = SaveDir;
         stp{id} = steps(1);
         ind{id} = id; 
         id = id + 1;
     end
 end
 
-out = slurmfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp,folder,'partition', '8GBXS')
-
-% if Test.maxfire(cnt2)>5
-% %                 out = slurmfun(@SpikeModPartTransferPPC,cw,alpha,maxfire,g,N,stp,func,'partition', '16GBS')
-%     %PPC from SuperNeuron
-%     out = slurmfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp,folder,'partition', '16GBS')            
-% else
-% %                 out = slurmfun(@SpikeModPartTransferPPC,cw,alpha,maxfire,g,N,stp,func,'partition', '8GBXS')
-%     %PPC from SuperNeuron    
-%     out = slurmfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp,folder,'partition', '8GBXS')
-% end
-%             out = cellfun(@SpikeModPartTransferPPC2,cw,alpha,maxfire,g,N,ind,func)
+out = cellfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp)
 
 id = 1;    
 result.PPCfreq = out{1}.PPCfrq;
@@ -212,20 +154,7 @@ for cnt3 = 1 : length(Test.fac)
         id = id + 1;                
     end
 end
-result.str = 'snr_cw';
-result.maxfire = Test.maxfire;%(cnt2);
-%result.func = Test.func{cnt1};
-result.N = Test.N;%(cnt11);
-
-save(fullfile(SaveDir,'FigS7','SpikePPC'),'result')
-%save(fullfile(save_folder,sprintf('ModpartPPC_%s_rate%d',Test.func{cnt1},cnt2)),'result')
-clear result
-%        end
-%    end
-%end
-
-
-
-
-
-
+result.str      = 'snr_cw';
+result.maxfire  = Test.maxfire;
+result.N        = Test.N;
+save(fullfile('SpikePPC'),'result')
