@@ -86,7 +86,7 @@ for cnt1 = 1 : length(Test.fac)
         id = id + 1;
     end
 end
-out = cellfun(@PoissonSpikeCoh,cw,alpha,maxfire,g,N,stps,fl);      
+out = cellfun(@PoissonSpikeCoh,cw,alpha,maxfire,g,N,stps);      
 
 id = 1;        
 for cnt3 = 1 : length(Test.fac)

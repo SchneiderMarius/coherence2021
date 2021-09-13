@@ -11,7 +11,6 @@ modstr  = cell(1,length(ModulationStrength));
 Ntest   = cell(1,length(ModulationStrength));
 stepnum = cell(1,length(ModulationStrength));
 plt     = cell(1,length(ModulationStrength));
-folder  = cell(1,length(ModulationStrength));
 
 for cnt1 = 1 : length(ModulationStrength)
     frate{cnt1}     = 2;
@@ -19,9 +18,8 @@ for cnt1 = 1 : length(ModulationStrength)
     Ntest{cnt1}     = 10000;
     stepnum{cnt1}   = 20;
     plt{cnt1}       = 0;
-    folder{cnt1}    = cd;
 end
 
-[result] = cellfun(@ProjectionSource,frate,modstr,Ntest,stepnum,plt,folder);    
+[result] = cellfun(@ProjectionSource,frate,modstr,Ntest,stepnum,plt);    
 
 save('Fig3C','result')
