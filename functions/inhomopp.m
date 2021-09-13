@@ -1,9 +1,5 @@
 function [spikeMat, Frate] = inhomopp(mod,modstr,par,maxfire)
 
-% mod: normalised modulating process 
-% input: should have same length as mod and vary between 0 and 10
-% max. firing rate
-
 if nargin<2
     modstr = 1;
 end

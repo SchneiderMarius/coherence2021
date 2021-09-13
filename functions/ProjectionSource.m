@@ -19,7 +19,6 @@ end
 
 load(fullfile(cd,'par','ARparameter'));
 
-%% noise
 Nsub            = 100;
 numTrial        = 400;
 params.fsample  = 1000;
@@ -31,10 +30,10 @@ time            = params.rate:params.rate:params.time;
 
 for cnt0 = 1 : numTrial
     S{cnt0} = zeros(length(time),1);
-    for cnt1 = 1 : size(parAR{1}.coeff,1)
+    for cnt1 = 1 : size(parAR.coeff,1)
         S{cnt0}(1:2,cnt1) =  randn(2,1);
         for cnt2 = 3 : length(time)              
-           S{cnt0}(cnt2,cnt1) = parAR{1}.coeff(cnt1,:) * S{cnt0}(cnt2-2:cnt2-1,cnt1) + randn;         
+           S{cnt0}(cnt2,cnt1) = parAR.coeff(cnt1,:) * S{cnt0}(cnt2-2:cnt2-1,cnt1) + randn;         
         end
     end
 end
@@ -48,8 +47,8 @@ if plt == 1
     
     out.Signal.spikeMat = spikeMat(1:1000,:);
     clear spikeMat
-    LF{1} = full(LF{1});
-    
+
+    LF{1}    = full(LF{1});
     [~,td,~] = fieldtrip_it(LF,params);
     cfg          = [];
     cfg.lpfilter = 'yes';
@@ -78,7 +77,6 @@ for cnt1 =1 : length(S)
 end
 [~,tdSP,~] = fieldtripIT(LFP,params);
 
-% evalulate PPC
 cfg              = [];
 cfg.method       = 'mtmconvol';
 cfg.foi          = [1:1:100];

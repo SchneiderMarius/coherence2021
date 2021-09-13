@@ -174,8 +174,8 @@ out = rmfield(out,'LFP');
 
 [~,tdSP,~] = fieldtrip(tdSP,params);
 
-idlfp = [1 2];
-idsp = 3;
+idlfp   = [1 2];
+idsp    = 3;
 
 for cnt1= 1 : length(idlfp)
     PPC_temp = [];
