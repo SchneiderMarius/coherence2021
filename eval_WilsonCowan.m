@@ -68,7 +68,7 @@ for cnt1 = 1 : length(data)
         apend{cnt2} = 'entrain';
     end
 
-    ct = length(apend);
+    ct = length(strength);
 
     for cnt2 = 1 : length(strength)
         nam{cnt2+ct}  = name;
