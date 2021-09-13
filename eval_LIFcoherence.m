@@ -4,10 +4,9 @@ clear all
 addpath(fullfile(cd,'functions'));
 
 %%
-Test.N        = 1%500;
+Test.N        = 500;
 Test.cw       = [logspace(-3,0,15)];
 Test.alpha    = [logspace(-2,0,10) 1.25 1.5 2];
-Test.N        = 500;
 Test.fac      = [0.242,0.39,0.556] ;
 
 id = 1;

@@ -114,7 +114,7 @@ clear result
 clear all
 addpath(fullfile(cd,'functions'));
 
-Test.cw         = [logspace(-3,0,15)];
+Test.cw         = logspace(-3,0,15);
 Test.alpha      = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];
 Test.fac        = fliplr(Test.alpha);
 Test.g          = 1;
@@ -127,30 +127,31 @@ Test.fac        = Test.fac(9);
 id = 1;        
 for cnt1 = 1 : length(Test.fac)
     for cnt2 = 1 : length(Test.cw)
-        cw{id} = Test.cw(cnt2);
-        alpha{id} = Test.fac(cnt1);
-        N{id} = Test.N;
+        cw{id}      = Test.cw(cnt2);
+        alpha{id}   = Test.fac(cnt1);
+        N{id}       = Test.N;
         maxfire{id} = Test.maxfire;
-        g{id} = Test.g(1);
-        stp{id} = steps(1);
-        ind{id} = id; 
+        g{id}       = Test.g(1);
+        stp{id}     = steps(1);
+        ind{id}     = id; 
+        
         id = id + 1;
     end
 end
 
-out = cellfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp)
+out = cellfun(@PoissonSpikePPC,cw,alpha,maxfire,g,N,stp);
 
-id = 1;    
+id = 1;   
+
 result.PPCfreq = out{1}.PPCfrq;
 result.Cohfreq = out{1}.Cohfrq;
-
-for cnt3 = 1 : length(Test.fac)
-    for cnt4 = 1 : length(Test.cw)
-        result.Frate(cnt3,cnt4) = out{id}.Frate;
-        result.cw(cnt3,cnt4) = Test.cw(cnt4);
-        result.snr(cnt3,cnt4) = out{id}.SNR;
-        result.PPC{cnt3,cnt4} = out{id}.PPC;  
-        result.Coh{cnt3,cnt4} = out{id}.Coh;  
+for cnt1 = 1 : length(Test.fac)
+    for cnt2 = 1 : length(Test.cw)
+        result.Frate(cnt1,cnt2) = out{id}.Frate;
+        result.cw(cnt1,cnt2) = Test.cw(cnt2);
+        result.snr(cnt1,cnt2) = out{id}.SNR;
+        result.PPC{cnt1,cnt2} = out{id}.PPC;  
+        result.Coh{cnt1,cnt2} = out{id}.Coh;  
         id = id + 1;                
     end
 end
