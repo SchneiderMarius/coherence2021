@@ -103,7 +103,7 @@ out.N      = steps;
 
 for cnt1 = 1 : length(steps)
 
-    [~,td,~] = fieldtripIT(out.SP(cnt1,:),params);
+    [~,td,~] = fieldtrip(out.SP(cnt1,:),params);
     cfg          = [];
     cfg.lpfilter = 'yes';
     cfg.lpfreq   = 100;
@@ -123,7 +123,7 @@ for cnt1 = 1 : numTrial
     tdSP{cnt1} = [out.LFP{cnt1}';SPt{cnt1}];
 end
 
-[~,tdSP,~] = fieldtripIT(tdSP,params);
+[~,tdSP,~] = fieldtrip(tdSP,params);
 
 idlfp = [1 2];
 idsp = 3:Ntest+2;
@@ -172,7 +172,7 @@ end
 
 out = rmfield(out,'LFP');
 
-[~,tdSP,~] = fieldtripIT(tdSP,params);
+[~,tdSP,~] = fieldtrip(tdSP,params);
 
 idlfp = [1 2];
 idsp = 3;
@@ -187,7 +187,7 @@ for cnt1= 1 : length(idlfp)
         cfg.timwin       = [-0.35/2 0.35/2];
         cfg.spikechannel = tdSP.label{idsp(cnt2)};
         cfg.channel      = tdSP.label{idlfp(cnt1)};
-        stsFFT           = ft_spiketriggeredspectrum(cfg, tdSP)  
+        stsFFT           = ft_spiketriggeredspectrum(cfg, tdSP);
 
         cfg               = [];
         cfg.method        = 'ppc1';

@@ -1,26 +1,21 @@
-function [out] =  SlurmARpartCoh(parAR,params,numTrial,fac,cw,func)
+function [out] =  SSM2(parAR,params,numTrial,fac,cw,func)
 
 rng('shuffle');
 
-%fac: scales SNR
-% cw: scales coupling
-
 if strcmp(func,'sigmoid')
-%    f = @(x) x./sqrt(1+(x).^2);
-%    f = @(x) x./(1+abs(x));
    f = @(x) 2*std(x)*(x/std(x))./(1+abs(x/std(x)));
 else
    f = @(x) x;
 end
 
-num = 3;
+num         = 3;
 params.time = 10;
-len = 1/params.rate*params.time;
-time = params.rate:params.rate:params.time;
+len         = 1/params.rate*params.time;
+time        = params.rate:params.rate:params.time;
+
 out.Signal  = cell(1,numTrial);
-out.Noise  = cell(1,numTrial);
-out.LFP = cell(1,numTrial);
-snr_temp = zeros(1,numTrial);
+out.Noise   = cell(1,numTrial);
+out.LFP     = cell(1,numTrial);
 
 for cnt0 = 1 : numTrial
     S = zeros(length(time),1);
