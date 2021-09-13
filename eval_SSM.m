@@ -45,9 +45,9 @@ for cnt1 = 1 : length(func)
     for cnt2 = 1 : length(SNR)        
         for cnt3 = 1 : length(cw)
             result{cnt1}.cw(cnt2,cnt3) = cw(cnt3);
-            result{cnt1}.snr(cnt2,cnt3) = out{id}.snr_temp;
-            result{cnt1}.CohSim(cnt2,cnt3) = out{id}.Cohf;  
-            result{cnt1}.cohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out{id}.snr_temp)))));
+            result{cnt1}.snr(cnt2,cnt3) = out(id).snr_temp;
+            result{cnt1}.CohSim(cnt2,cnt3) = out(id).Cohf;  
+            result{cnt1}.cohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out(id).snr_temp)))));
             result{cnt1}.func = func{cnt1};
             id = id +1;
         end

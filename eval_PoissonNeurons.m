@@ -51,9 +51,9 @@ for cnt1 = 1 : length(func)
     for cnt2 = 1 : length(SNR)
         for cnt3 = 1 : length(cw)
             result.cw(cnt2,cnt3) = cw(cnt3);
-            result.snr(cnt2,cnt3) = out{id}.snr_temp;
-            result.CohSim(cnt2,cnt3) = out{id}.Cohf;  
-            result.cohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out{id}.snr_temp)))));
+            result.snr(cnt2,cnt3) = out(id).snr_temp;
+            result.CohSim(cnt2,cnt3) = out(id).Cohf;  
+            result.cohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out(id).snr_temp)))));
             id = id + 1;
         end
     end
@@ -95,8 +95,8 @@ for cnt3 = 1 : length(Test.fac)
         result.cw(cnt3,cnt4) = Test.cw(cnt4);
         result.snr(cnt3,cnt4) = out{id}.SNR;               
         for cnt5 = 1 : steps
-            result.pow(cnt3,cnt4,cnt5,:,:) = out{id}.pow(:,:,cnt5);
-            result.CohSim(cnt3,cnt4,cnt5) = out{id}.Cohf(cnt5);  
+            result.pow(cnt3,cnt4,cnt5,:,:) = out(id).pow(:,:,cnt5);
+            result.CohSim(cnt3,cnt4,cnt5) = out(id).Cohf(cnt5);  
         end
         id = id + 1;                
     end
@@ -147,11 +147,11 @@ result.PPCfreq = out{1}.PPCfrq;
 result.Cohfreq = out{1}.Cohfrq;
 for cnt1 = 1 : length(Test.fac)
     for cnt2 = 1 : length(Test.cw)
-        result.Frate(cnt1,cnt2) = out{id}.Frate;
+        result.Frate(cnt1,cnt2) = out(id).Frate;
         result.cw(cnt1,cnt2) = Test.cw(cnt2);
-        result.snr(cnt1,cnt2) = out{id}.SNR;
-        result.PPC{cnt1,cnt2} = out{id}.PPC;  
-        result.Coh{cnt1,cnt2} = out{id}.Coh;  
+        result.snr(cnt1,cnt2) = out(id).SNR;
+        result.PPC{cnt1,cnt2} = out(id).PPC;  
+        result.Coh{cnt1,cnt2} = out(id).Coh;  
         id = id + 1;                
     end
 end
