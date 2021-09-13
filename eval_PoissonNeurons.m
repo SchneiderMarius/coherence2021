@@ -103,7 +103,7 @@ for cnt3 = 1 : length(Test.fac)
 end
 result.strcoh   = 'snr_cw_N';
 result.strpow   = 'snr_cw_N_Signal_frq';
-result.maxfire  = Test.maxfire(cnt2);
+result.maxfire  = Test.maxfire;
 result.N        = out(1).N;
 result.powfrq   = out(1).f;
 
