@@ -15,10 +15,7 @@ if nargin<3 || isempty(params)
 end
 
 params.dt    = 1;
-% params.tstop = 200;
 params.tstop = length(I)*params.dt;
-
-spt = zeros(params.tstop/params.dt,1);
 
 V(1,1:N) = params.Vrest;
 spt      = sparse(zeros(length(I),N));
@@ -26,7 +23,6 @@ spt      = sparse(zeros(length(I),N));
 if size(I,2)<N
     I(:,1:N) = repmat(I(:,1),1,N);
 end
-
 
 for cnt = 1 : params.tstop/params.dt-1
     
@@ -39,25 +35,5 @@ for cnt = 1 : params.tstop/params.dt-1
        spt(cnt+1,id) = 1;
     end
 end
-
 Frate = sum(spt)/(params.tstop/1000);
-% if plot_it==1
-%     figure
-%     subplot(2,1,1)
-%     hold all
-%     plot(params.dt:params.dt:params.tstop,V);
-%     title('voltage trace')
-%     subplot(2,1,2)
-%     hold all
-%     for cnt1 = 1 : N
-%        plot(params.dt:params.dt:params.tstop,spt(:,cnt1)*cnt1,'k.');
-%     end
-%     ylim([0.5 N+0.5])
-%     
-%     title('input current')
-% %     plot(params.dt:params.dt:params.tstop,I);
-% %     subplot(3,1,3)
-% %     plot(params.dt:params.dt:params.tstop,ge);
-% %     title('synaptic current')
-% end
 end
