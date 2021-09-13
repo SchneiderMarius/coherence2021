@@ -1,4 +1,4 @@
-function  [out] = ProjectionSource(frate,modstr,Ntest,stepnum,plt,folder)
+function  [out] = ProjectionSource(frate,modstr,Ntest,stepnum,plt)
 
 if nargin<1
     frate = 2;
@@ -16,7 +16,6 @@ if nargin<5 || isempty(plt)
     plt = 0;
 end
 
-
 load(fullfile(cd,'par','ARparameter'));
 
 Nsub            = 100;
@@ -27,6 +26,7 @@ params.rate     = 1/params.fsample;
 params.time     = 3;
 len             = 1/params.rate*params.time;
 time            = params.rate:params.rate:params.time;
+steps           = round(logspace(0,log10(Ntest),stepnum));
 
 for cnt0 = 1 : numTrial
     S{cnt0} = zeros(length(time),1);

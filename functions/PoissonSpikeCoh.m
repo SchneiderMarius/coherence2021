@@ -46,7 +46,7 @@ for cnt0 = 1 : numTrial
         for cnt2 = 3 : length(time)            
            S(cnt2,cnt1) = parAR.coeff(cnt1,:) * S(cnt2-2:cnt2-1,cnt1) + randn;     
         end
-        pink = Pink_noise(len,num,parAR.a,params);
+        pink = Pink_noise(len,num,parAR.a);
         
         out.Signal{cnt0} = S;
         out.Noise{cnt0}  = alpha*1000*pink;
@@ -65,13 +65,16 @@ modstr      = 0.1;
 steps       = round(linspace(1,Ntest,steps)/10)*10;
 steps(1)    = 1;
 
+%%
 params.Ntest = Ntest;
 LF = cell(1,length(out.LFP));
 for cnt1 = 1 : length(out.LFP)  
-    input1                            = zeros(length(out.LFP{cnt1}),1);
-    [~, Frate(cnt1),LF{cnt1}]         = inhomopp(out.LFP{cnt1}(:,2),modstr,params,maxfire,steps);      
+    input1                            = zeros(length(out.LFP{cnt1}),1);% randn(length(S{cnt1}),1) * 2 * noiseAmp - noiseAmp;    
+    %[~, Frate(cnt1),LF{cnt1}]         = inhomopp2test(out.LFP{cnt1}(:,2),modstr,params,maxfire,SPcumsum,steps);      
+    [~, Frate(cnt1),LF{cnt1}]         = inhomopp2test(out.LFP{cnt1}(:,2),modstr,params,maxfire,steps);      
 end
 
+%%
 for cnt1 = 1 : length(steps)
     for cntT =1 : length(LF)
         LFP{cntT} = full(LF{cntT}(cnt1,:)); 

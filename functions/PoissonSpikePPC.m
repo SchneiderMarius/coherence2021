@@ -23,7 +23,7 @@ if nargin<7
    func = 'sigmoid';
 end
 
-load(fullfile(cd,'par','Fig2_ARfit'))
+load(fullfile(cd,'par','ARparameter'))
 
 f = @(x) 2*std(x)*(x/std(x))./(1+abs(x/std(x)));
 
@@ -42,12 +42,12 @@ out.LFP         = cell(1,numTrial);
 
 for cnt0 = 1 : numTrial
     S = zeros(length(time),1);
-    for cnt1 = 1 : size(parAR{1}.coeff,1)
+    for cnt1 = 1 : size(parAR.coeff,1)
         S(1:2,cnt1) =  randn(2,1);
         for cnt2 = 3 : length(time)            
-           S(cnt2,cnt1) = parAR{1}.coeff(cnt1,:) * S(cnt2-2:cnt2-1,cnt1) + randn;     
+           S(cnt2,cnt1) = parAR.coeff(cnt1,:) * S(cnt2-2:cnt2-1,cnt1) + randn;     
         end
-        pink = Pink_noise(len,num,parAR{1}.a,params);
+        pink = Pink_noise(len,num,parAR.a);
         
         out.Signal{cnt0} = S;
         out.Noise{cnt0}  = alpha*1000*pink;
@@ -106,7 +106,7 @@ for cntL = 1 : length(idlfp)
             cfg.timwin       = [-0.35/2 0.35/2];
             cfg.spikechannel = tdSP.label(idN{cntS}(cnt2));
             cfg.channel      = tdSP.label(idlfp{cntL});
-            stsFFT           = ft_spiketriggeredspectrum(cfg, tdSP) 
+            stsFFT           = ft_spiketriggeredspectrum(cfg, tdSP);
             
             cfg               = [];
             cfg.method        = 'ppc0';
