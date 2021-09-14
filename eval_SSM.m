@@ -1,8 +1,9 @@
 % SSM Model
 clear all
 addpath(fullfile(cd,'functions'));
-
 load(fullfile(cd,'par','ARparameter'));
+
+%%
 
 par             = parAR;
 par.numTrial    = 500;

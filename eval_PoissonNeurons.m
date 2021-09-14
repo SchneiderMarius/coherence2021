@@ -1,12 +1,12 @@
 % Model of Figure S7
 % add fieldtrip toolbox to your path
-
 clear all
 addpath(fullfile(cd,'functions'));
-
 load(fullfile(cd,'par','ARparameter'));
 
-par = parAR;
+%%
+
+par             = parAR;
 par.numTrial    = 500;
 par.N           = 1000; % number of neurons
 par.fsample     = 1000; 
