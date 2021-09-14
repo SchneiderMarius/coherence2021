@@ -1,16 +1,13 @@
-% Model of Figure S8,S2,S5
 % add fieldtrip toolbox to your path
 clear all
 addpath(fullfile(cd,'functions'));
 
-
-%%
 data{1} = dir(fullfile(cd,'par','*25Hz.mat'));
 data{2} = dir(fullfile(cd,'par','*25Hz.mat'));
 data{3} = dir(fullfile(cd,'par','*65Hz.mat'));
 
 numTrial = 800;
-strength = [0 logspace(-2,0,10) 0.1];
+strength = [0 logspace(-2,0,10) 0.1];  % projection strength
 strength = sort(strength);
 numSim   = length(strength)*numTrial;
 
@@ -28,7 +25,6 @@ for cnt1 = 1 : length(data)
         result.snd = 2;
         result.rcv = 1;         
     end
-    
     
     param       = cell(1,numSim);
     W           = cell(1,numSim);
@@ -52,7 +48,6 @@ for cnt1 = 1 : length(data)
         end
     end
 	cellfun(@WilsonCowan,W, input, alpha, beta,init_state, param,response_fn,flder);            
-    
     
     apend   = cell(1,2*length(strength)); 
     strg    = cell(1,2*length(strength)); 

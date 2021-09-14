@@ -3,24 +3,16 @@
 clear all
 addpath(fullfile(cd,'functions'));
 
+load(fullfile(cd,'par','ARparameter'));
 %%
-Test.N        = 500;
-Test.cw       = [logspace(-3,0,15)];
-Test.alpha    = [logspace(-2,0,10) 1.25 1.5 2];
-Test.fac      = [0.242,0.39,0.556] ;
 
-id = 1;
-for cnt1= 1 : length(Test.cw)
-    for cnt2 = 1 : length(Test.fac)
-        cw{id}      = Test.cw(cnt1);
-        alpha{id}   = Test.fac(cnt2); 
-        g{id}       = 1;
-        N{id}       = Test.N;
-        steps{id}   = 8;
-        ind{id}.sos = cnt2;
-        ind{id}.cw  = cnt1;
-        id          = id + 1;
-    end
-end
+par             = parAR;
+par.fsample     = 1000;
+par.numTrial    = 800;
+par.time        = 4;    % Time in sec
+par.N           = 500;  % Number of Neurons
+par.cw          = 0.05; % projection strength
+par.fac         = 0.5;  % factor determining SOS
+par.g           = 1;    % gamma parameter from SSM model
 
-cellfun(@LIFmod,cw,alpha,g,N,steps,ind)
+result = LIFmod(par)

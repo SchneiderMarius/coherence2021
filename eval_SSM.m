@@ -2,55 +2,44 @@
 clear all
 addpath(fullfile(cd,'functions'));
 
-%%
 load(fullfile(cd,'par','ARparameter'));
 
-numTrial        = 500;
-num             = 2;
-params.fsample  = 1000;
-params.rate     = 1/params.fsample;
-params.time     = 30;
-params.delay    = 4;
-params.a        = 2/3;
-params.freq     = [17 19];
-len             = 1/params.rate*params.time;
-time            = params.rate:params.rate:params.time;
+par             = parAR;
+par.numTrial    = 500;
+par.fsample     = 1000;
+par.time        = 20;                                   % time in sec
+par.a           = 2/3;                                  % slope 1/f
 
-cw  = [logspace(-3,0,15) 2 4 6 8 10];
-SNR = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];
-
-CohSim = zeros(length(SNR),length(cw),numTrial);
-CohAna = zeros(length(SNR),length(cw),numTrial);
-
-fac     = fliplr(SNR);
-func    = {'sigmoid',[]};
-
-result = cell(1,length(func));
+func    = {'sigmoid',[]};                               % determines transfer function
+cw      = [logspace(-3,0,15) 2 4 6 8 10];               % projection strength
+fac     = [logspace(-2,0,10) 2 4 6 8 10 14 50 100];     % determines SOS
+result  = cell(1,length(func));
 
 for cnt1 = 1 : length(func)
+    
     id =1 ;
-    for cnt2 = 1 : length(SNR)        
+    parameter = cell(1,length(fac)*length(cw));
+    for cnt2 = 1 : length(fac)        
         for cnt3 = 1 : length(cw)
-            funcin{id}      = func{cnt1};
-            parARin{id}     = parAR;
-            paramsin{id}    = params;
-            numTrialin{id}  = numTrial;
-            facin{id}       = fac(cnt2);
-            cwin{id}        = cw(cnt3);
+            parameter{id}       = par;
+            parameter{id}.cw    = cw(cnt3);
+            parameter{id}.fac   = fac(cnt2);
+            parameter{id}.func  = func{cnt1};
             id = id + 1;
         end
     end            
-    out = cellfun(@SSM,parARin,paramsin,numTrialin,facin,cwin,funcin)                 
+    out = cellfun(@SSM1,parameter);  
+    
     id = 1;
-    for cnt2 = 1 : length(SNR)        
+    for cnt2 = 1 : length(fac)        
         for cnt3 = 1 : length(cw)
             result{cnt1}.cw(cnt2,cnt3) = cw(cnt3);
-            result{cnt1}.snr(cnt2,cnt3) = out(id).snr_temp;
-            result{cnt1}.CohSim(cnt2,cnt3) = out(id).Cohf;  
-            result{cnt1}.cohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out(id).snr_temp)))));
+            result{cnt1}.sos(cnt2,cnt3) = out(id).SOS;
+            result{cnt1}.CohSim(cnt2,cnt3) = out(id).Coh;  
+            result{cnt1}.CohAna(cnt2,cnt3) = sqrt(1./(1+(1./(cw(cnt3).^2*(1+out(id).SOS)))));
             result{cnt1}.func = func{cnt1};
             id = id +1;
         end
     end
 end
-save(fullfile(cd,'Fig2BC'),'result');
+
